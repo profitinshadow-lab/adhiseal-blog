@@ -1,0 +1,207 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ post_title }} | AdhiSeal Blog</title>
+    <meta name="description" content="{{ post_excerpt }}">
+    <meta name="keywords" content="{{ tags_str }}">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://blog.adhiseal.com/posts/{{ post_slug }}/">
+    <meta property="og:title" content="{{ post_title }}">
+    <meta property="og:description" content="{{ post_excerpt }}">
+    <meta property="og:type" content="article">
+    <meta property="article:published_time" content="{{ post_date }}">
+    <link rel="stylesheet" href="/assets/style.css?v=3">
+</head>
+
+<body>
+
+    <!-- READING PROGRESS -->
+    <div class="reading-progress">
+        <div class="reading-progress-bar" id="progressBar"></div>
+    </div>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a class="navbar-brand" href="/">
+                <img src="/assets/Adhi-Seal-1.svg" alt="AdhiSeal Logo" class="navbar-logo-img">
+            </a>
+            <ul class="navbar-nav">
+                <li><a href="/">Home</a></li>
+                <li><a href="/category/tips/">Tips &amp; Tricks</a></li>
+                <li><a href="/category/guides/">Guides</a></li>
+                <li><a href="/category/products/">🧱 Products</a></li>
+                <li><a href="https://adhiseal.com" target="_blank">🌐 Main Site</a></li>
+            </ul>
+            <div class="navbar-actions">
+                <a href="https://adhiseal.com/dealer/" target="_blank" class="btn-primary">Become a Dealer</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- BREADCRUMB -->
+    <div class="article-breadcrumb">
+        <a href="/">Home</a> &rsaquo;
+        <a href="/category/{{ post_category }}/">{{ post_category_label }}</a> &rsaquo;
+        <span>{{ post_title }}</span>
+    </div>
+
+    <!-- ARTICLE LAYOUT -->
+    <div class="article-layout">
+        <article>
+            <!-- HEADER -->
+            <header class="article-header">
+                <span class="article-cat-tag">{{ post_category_label }}</span>
+                <h1 class="article-title">{{ post_title }}</h1>
+                <div class="article-meta">
+                    <div class="meta-item">✍️ <strong>{{ post_author }}</strong></div>
+                    <div class="meta-item">📅 <strong>{{ post_date_display }}</strong></div>
+                    <div class="meta-item">⏱ <strong>{{ post_read_time }} minute read</strong></div>
+                </div>
+            </header>
+
+            <!-- HERO IMAGE -->
+            <div class="article-hero-img">
+                <div class="article-hero-img-bg" style="--img-color: {{ post_image_color }};"></div>
+                <div class="article-hero-img-text">🧱</div>
+            </div>
+
+            <!-- BODY -->
+            <div class="article-body">
+                {{ post_body_html }}
+            </div>
+
+            <!-- TAGS -->
+            <div class="tags-row">
+                {% for tag in post_tags %}
+                <span class="tag"># {{ tag }}</span>
+                {% endfor %}
+            </div>
+
+            <!-- RELATED POSTS -->
+            {% if related_posts %}
+            <section class="related-section">
+                <h3 class="section-title">📖 Related Articles</h3>
+                <div class="related-grid">
+                    {% for r in related_posts %}
+                    <div class="related-card" onclick="location.href='../{{ r.slug }}/'">
+                        <div class="related-card-cat">{{ r.category_label }}</div>
+                        <div class="related-card-title">{{ r.title }}</div>
+                    </div>
+                    {% endfor %}
+                </div>
+            </section>
+            {% endif %}
+        </article>
+
+        <!-- SIDEBAR -->
+        <aside class="article-sidebar sidebar">
+            <!-- TOC -->
+            <div class="widget toc-widget">
+                <div class="widget-header">📋 Table of Contents</div>
+                <div class="widget-body">
+                    <ul class="toc-list" id="tocList">
+                        {{ toc_html }}
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Products -->
+            <div class="widget product-widget">
+                <div class="widget-header">🛒 AdhiSeal Products</div>
+                <div class="widget-body">
+                    <ul class="product-links">
+                        <li><a href="https://adhiseal.com/premium-adhesive" target="_blank">Premium Adhesive</a></li>
+                        <li><a href="https://adhiseal.com/standard-plus-adhesive" target="_blank">Standard+</a></li>
+                        <li><a href="https://adhiseal.com/super-adhesive" target="_blank">Super Adhesive</a></li>
+                        <li><a href="https://adhiseal.com/elite-adhesive/" target="_blank">Elite Adhesive</a></li>
+                    </ul>
+                    <a href="https://adhiseal.com/our-products" target="_blank" class="btn-primary"
+                        style="display:block;text-align:center;margin-top:8px;font-size:0.85rem;">All Products →</a>
+                </div>
+            </div>
+
+            <!-- Share -->
+            <div class="widget">
+                <div class="widget-header">📤 Share</div>
+                <div class="widget-body" style="display:flex;gap:8px;flex-wrap:wrap;">
+                    <a href="https://wa.me/?text={{ post_title | urlencode }}%20https://blog.adhiseal.com/posts/{{ post_slug }}/"
+                        target="_blank" class="btn-primary" style="font-size:0.8rem;padding:8px 14px;">WhatsApp</a>
+                    <a href="https://twitter.com/intent/tweet?text={{ post_title | urlencode }}&url=https://blog.adhiseal.com/posts/{{ post_slug }}/"
+                        target="_blank" class="btn-primary"
+                        style="font-size:0.8rem;padding:8px 14px;background:#1a1a2e;">Twitter</a>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div>
+                <div class="footer-brand">
+                    <div class="brand-name">AdhiSeal<span> Blog</span></div>
+                </div>
+                <p class="footer-desc">By tile adhesive experts — practical guides for contractors, homeowners, and builders.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="/">Home</a></li>
+                    <li><a href="/category/tips/">Tips &amp; Tricks</a></li>
+                    <li><a href="/category/guides/">Guides</a></li>
+                    <li><a href="../../sitemap.xml">Sitemap</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>AdhiSeal</h4>
+                <ul class="footer-links">
+                    <li><a href="https://adhiseal.com/about/" target="_blank">About Us</a></li>
+                    <li><a href="https://adhiseal.com/dealer/" target="_blank">Dealer Network</a></li>
+                    <li><a href="https://adhiseal.com/contact-us" target="_blank">Contact</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Products</h4>
+                <ul class="footer-links">
+                    <li><a href="https://adhiseal.com/premium-adhesive" target="_blank">Premium</a></li>
+                    <li><a href="https://adhiseal.com/standard-plus-adhesive" target="_blank">Standard+</a></li>
+                    <li><a href="https://adhiseal.com/super-adhesive" target="_blank">Super</a></li>
+                    <li><a href="https://adhiseal.com/elite-adhesive/" target="_blank">Elite</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© {{ year }} AdhiSeal. All rights reserved.</span>
+            <span><a href="https://adhiseal.com" target="_blank">adhiseal.com</a> · <a
+                    href="../../sitemap.xml">Sitemap</a></span>
+        </div>
+    </footer>
+
+    <script>
+        // Reading progress bar
+        window.addEventListener('scroll', () => {
+            const scrollTop = window.scrollY;
+            const docHeight = document.documentElement.scrollHeight - window.innerHeight;
+            const progress = docHeight > 0 ? (scrollTop / docHeight) * 100 : 0;
+            document.getElementById('progressBar').style.width = progress + '%';
+        });
+
+        // Highlight active TOC item
+        const headings = document.querySelectorAll('.article-body h2, .article-body h3');
+        const tocLinks = document.querySelectorAll('.toc-list a');
+        window.addEventListener('scroll', () => {
+            let current = '';
+            headings.forEach(h => { if (window.scrollY >= h.offsetTop - 100) current = h.id; });
+            tocLinks.forEach(a => {
+                a.style.color = a.getAttribute('href') === '#' + current ? 'var(--primary)' : '';
+                a.style.fontWeight = a.getAttribute('href') === '#' + current ? '700' : '';
+            });
+        });
+    </script>
+</body>
+
+</html>

@@ -1,0 +1,268 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>{{ page_title }}</title>
+    <meta name="description" content="{{ page_description }}">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://blog.adhiseal.com/{{ canonical }}">
+    <meta property="og:title" content="{{ page_title }}">
+    <meta property="og:description" content="{{ page_description }}">
+    <meta property="og:type" content="website">
+    <meta property="og:url" content="https://blog.adhiseal.com/{{ canonical }}">
+    <link rel="stylesheet" href="{{ css_path }}assets/style.css?v=3">
+    <link rel="sitemap" type="application/xml" href="{{ css_path }}sitemap.xml">
+</head>
+
+<body>
+
+    <!-- NAVBAR -->
+    <nav class="navbar">
+        <div class="navbar-inner">
+            <a class="navbar-brand" href="{{ css_path }}">
+                <img src="{{ css_path }}assets/Adhi-Seal-1.svg" alt="AdhiSeal Logo" class="navbar-logo-img">
+            </a>
+            <ul class="navbar-nav">
+                <li><a href="{{ css_path }}" class="active">Home</a></li>
+                <li><a href="{{ css_path }}category/tips/">Tips &amp; Tricks</a></li>
+                <li><a href="{{ css_path }}category/guides/">Guides</a></li>
+                <li><a href="{{ css_path }}category/products/">Products</a></li>
+                <li><a href="https://adhiseal.com" target="_blank">🌐 Main Site</a></li>
+            </ul>
+            <div class="navbar-actions">
+                <a href="https://adhiseal.com/dealer/" target="_blank" class="btn-primary">Become a Dealer</a>
+            </div>
+        </div>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-inner">
+            <div class="hero-badge">🧱 Tile Adhesive Experts</div>
+            <h1>{{ hero_title }}</h1>
+            <p>{{ hero_subtitle }}</p>
+            <div class="search-bar" role="search">
+                <input type="text" id="searchInput" placeholder="Search articles... e.g., 'bathroom tiles'"
+                    aria-label="Search articles">
+                <button onclick="doSearch()">🔍 Search</button>
+            </div>
+            <div class="hero-stats">
+                <div class="hero-stat">
+                    <span class="num">{{ total_posts }}+</span>
+                    <span class="lbl">Articles</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="num">{{ total_cities }}+</span>
+                    <span class="lbl">Cities Covered</span>
+                </div>
+                <div class="hero-stat">
+                    <span class="num">4</span>
+                    <span class="lbl">Product Grades</span>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- MAIN CONTENT -->
+    <div class="page-wrap">
+        <main>
+            <!-- CATEGORY TABS -->
+            <div class="category-tabs" role="tablist">
+                <button class="cat-tab active" data-cat="all" onclick="filterPosts(this, 'all')">📰 All Posts</button>
+                <button class="cat-tab" data-cat="tips" onclick="filterPosts(this, 'tips')">💡 Tips &amp;
+                    Tricks</button>
+                <button class="cat-tab" data-cat="guides" onclick="filterPosts(this, 'guides')">📖 Guides</button>
+                <button class="cat-tab" data-cat="products" onclick="filterPosts(this, 'products')">🧱 Products</button>
+            </div>
+
+            <!-- FEATURED POST -->
+            {% if featured_post %}
+            <div class="section-header">
+                <h2 class="section-title">⭐ Featured</h2>
+            </div>
+            <div class="featured-post animate-up"
+                onclick="location.href='{{ css_path }}posts/{{ featured_post.slug }}/'">
+                <div class="featured-image">
+                    <div class="featured-image-bg" style="--img-color: {{ featured_post.image_color }};"></div>
+                    <div class="featured-image-icon">🧱</div>
+                    <span class="featured-badge">Featured</span>
+                </div>
+                <div class="featured-body">
+                    <div class="featured-cat">{{ featured_post.category_label }}</div>
+                    <h2 class="featured-title">{{ featured_post.title }}</h2>
+                    <p class="featured-excerpt">{{ featured_post.excerpt }}</p>
+                    <div class="featured-meta">
+                        <span><strong>{{ featured_post.author }}</strong></span>
+                        <span>📅 {{ featured_post.date_display }}</span>
+                        <span>⏱ {{ featured_post.read_time }} min read</span>
+                    </div>
+                    <a href="{{ css_path }}posts/{{ featured_post.slug }}/" class="read-btn">Read More →</a>
+                </div>
+            </div>
+            {% endif %}
+
+            <!-- LATEST POSTS -->
+            <div class="section-header">
+                <h2 class="section-title">📰 Latest Articles</h2>
+                <span class="see-all">{{ total_posts }} articles</span>
+            </div>
+            <div class="posts-grid" id="postsGrid">
+                {{ post_cards_html }}
+            </div>
+
+            <!-- NEWSLETTER -->
+            <div class="newsletter-banner animate-up">
+                <h3>🔔 Get Notified About New Articles</h3>
+                <p>Tile installation tips, product guides, and expert advice — straight to your inbox</p>
+                <form class="newsletter-form" id="nlForm" onsubmit="subscribeNL(event)">
+                    <input type="email" id="nlEmail" name="email" placeholder="your@email.com" required>
+                    <button type="submit" id="nlBtn">Subscribe</button>
+                </form>
+            </div>
+        </main>
+
+        <!-- SIDEBAR -->
+        <aside class="sidebar">
+            <!-- Popular Posts -->
+            <div class="widget">
+                <div class="widget-header">🔥 Popular Posts</div>
+                <div class="widget-body">
+                    <ul class="widget-list">
+                        {{ popular_posts_html }}
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Categories -->
+            <div class="widget">
+                <div class="widget-header">📂 Categories</div>
+                <div class="widget-body">
+                    <ul class="cat-list">
+                        <li><a href="{{ css_path }}category/tips/">💡 Tips &amp; Tricks <span class="cat-count">{{
+                                    cat_counts.tips }}</span></a></li>
+                        <li><a href="{{ css_path }}category/guides/">📖 How-To Guides <span class="cat-count">{{
+                                    cat_counts.guides }}</span></a></li>
+                        <li><a href="{{ css_path }}category/products/">🧱 Products <span class="cat-count">{{
+                                    cat_counts.products }}</span></a></li>
+                    </ul>
+                </div>
+            </div>
+
+            <!-- Products Widget -->
+            <div class="widget product-widget">
+                <div class="widget-header">🛒 AdhiSeal Products</div>
+                <div class="widget-body">
+                    <ul class="product-links">
+                        <li><a href="https://adhiseal.com/premium-adhesive" target="_blank">Premium Adhesive</a></li>
+                        <li><a href="https://adhiseal.com/standard-plus-adhesive" target="_blank">Standard+ Adhesive</a>
+                        </li>
+                        <li><a href="https://adhiseal.com/super-adhesive" target="_blank">Super Adhesive</a></li>
+                        <li><a href="https://adhiseal.com/elite-adhesive/" target="_blank">Elite Adhesive</a></li>
+                    </ul>
+                    <a href="https://adhiseal.com/our-products" target="_blank" class="btn-primary"
+                        style="display:block;text-align:center;margin-top:4px;">All Products →</a>
+                </div>
+            </div>
+        </aside>
+    </div>
+
+    <!-- FOOTER -->
+    <footer class="footer">
+        <div class="footer-inner">
+            <div>
+                <div class="footer-brand">
+                    <div class="brand-name">AdhiSeal<span> Blog</span></div>
+                </div>
+                <p class="footer-desc">By tile adhesive experts — practical guides and tips for contractors, homeowners, and builders.</p>
+            </div>
+            <div class="footer-col">
+                <h4>Quick Links</h4>
+                <ul class="footer-links">
+                    <li><a href="{{ css_path }}">Home</a></li>
+                    <li><a href="{{ css_path }}category/tips/">Tips &amp; Tricks</a></li>
+                    <li><a href="{{ css_path }}category/guides/">Guides</a></li>
+                    <li><a href="{{ css_path }}category/products/">Products</a></li>
+                    <li><a href="{{ css_path }}sitemap.xml">Sitemap</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>Products</h4>
+                <ul class="footer-links">
+                    <li><a href="https://adhiseal.com/premium-adhesive" target="_blank">Premium Adhesive</a></li>
+                    <li><a href="https://adhiseal.com/standard-plus-adhesive" target="_blank">Standard+ Adhesive</a>
+                    </li>
+                    <li><a href="https://adhiseal.com/super-adhesive" target="_blank">Super Adhesive</a></li>
+                    <li><a href="https://adhiseal.com/elite-adhesive/" target="_blank">Elite Adhesive</a></li>
+                </ul>
+            </div>
+            <div class="footer-col">
+                <h4>AdhiSeal</h4>
+                <ul class="footer-links">
+                    <li><a href="https://adhiseal.com/about/" target="_blank">About Us</a></li>
+                    <li><a href="https://adhiseal.com/dealer/" target="_blank">Become a Dealer</a></li>
+                    <li><a href="https://adhiseal.com/contact-us" target="_blank">Contact</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <span>© {{ year }} AdhiSeal. All rights reserved.</span>
+            <span><a href="https://adhiseal.com" target="_blank">adhiseal.com</a> · <a
+                    href="{{ css_path }}sitemap.xml">Sitemap</a></span>
+        </div>
+    </footer>
+
+    <script>
+        function filterPosts(btn, cat) {
+            document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            document.querySelectorAll('.post-card').forEach(card => {
+                if (cat === 'all' || card.dataset.cat === cat) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
+        function doSearch() {
+            const q = document.getElementById('searchInput').value.toLowerCase().trim();
+            if (!q) return;
+            document.querySelectorAll('.post-card').forEach(card => {
+                const text = (card.dataset.title || '') + ' ' + (card.dataset.excerpt || '');
+                card.classList.toggle('hidden', !text.includes(q));
+            });
+            document.querySelectorAll('.cat-tab').forEach(b => b.classList.remove('active'));
+        }
+        document.getElementById('searchInput').addEventListener('keydown', e => { if (e.key === 'Enter') doSearch(); });
+        function subscribeNL(e) {
+            e.preventDefault();
+            const email = document.getElementById('nlEmail').value;
+            const btn = document.getElementById('nlBtn');
+            if (!email) return;
+            
+            btn.innerText = 'Subscribing...';
+            btn.disabled = true;
+            
+            const scriptURL = 'https://script.google.com/macros/s/AKfycbyDdVuGz2FIlMShgNWskEHR-_jdr60fhxGIceKFA1YiBPXN1RGOgekMKfpp4pk5t_nsQQ/exec';
+            
+            const formData = new FormData();
+            formData.append('email', email);
+
+            fetch(scriptURL, { method: 'POST', body: formData, mode: 'no-cors' })
+                .then(res => {
+                    alert('✅ Subscribed successfully! You will receive our new articles at: ' + email);
+                    document.getElementById('nlForm').reset();
+                    btn.innerText = 'Subscribe';
+                    btn.disabled = false;
+                })
+                .catch(err => {
+                    alert('❌ There was an error. Please try again.');
+                    btn.innerText = 'Subscribe';
+                    btn.disabled = false;
+                });
+        }
+    </script>
+</body>
+
+</html>
