@@ -61,3 +61,4 @@ jobs:
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./output/
           server-dir: ./  # Change this to ./public_html/blog/ or similar if needed
+          dangerous-clean-slate: true
