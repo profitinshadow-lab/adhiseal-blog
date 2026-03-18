@@ -53,18 +53,11 @@ jobs:
         run: |
           python generate.py --multi --no-submit
 
-      - name: Upload Artifact
-        uses: actions/upload-pages-artifact@v3
+      - name: 📂 Sync files to Hostinger (FTP)
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
-          path: 'output/'
-
-  deploy:
-    needs: build
-    runs-on: ubuntu-latest
-    environment:
-      name: github-pages
-      url: ${{ steps.deployment.outputs.page_url }}
-    steps:
-      - name: Deploy to GitHub Pages
-        id: deployment
-        uses: actions/deploy-pages@v4
+          server: ${{ secrets.FTP_SERVER }}
+          username: ${{ secrets.FTP_USERNAME }}
+          password: ${{ secrets.FTP_PASSWORD }}
+          local-dir: ./output/
+          server-dir: ./  # Change this to ./public_html/blog/ or similar if needed
