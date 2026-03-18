@@ -61,5 +61,5 @@ jobs:
           username: ${{ secrets.FTP_USERNAME }}
           password: ${{ secrets.FTP_PASSWORD }}
           local-dir: ./output/
-          server-dir: ./  # Change this to ./public_html/blog/ or similar if needed
+          server-dir: public_html/blog/  # Targeting the blog subdirectory
           dangerous-clean-slate: true
